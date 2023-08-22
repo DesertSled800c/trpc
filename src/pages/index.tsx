@@ -14,6 +14,8 @@ dayjs.extend(relativeTime);
 const CreatePostWizard = () => {
   const { user } = useUser();
 
+  console.log(user)
+
   const [input, setInput] = useState("");
 
   const ctx = api.useContext();
@@ -83,7 +85,7 @@ const Feed = () => {
   if (!data) return <div>Something went wrong!!</div>;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex grow flex-col overflow-y-scroll">
       {data.map((fullPost) => (
         <PostView {...fullPost} key={fullPost.post.id} />
       ))}
