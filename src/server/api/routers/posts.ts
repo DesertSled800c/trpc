@@ -7,6 +7,9 @@ import {
   privateProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
+import { Redis } from "@upstash/redis";
+
 
 const filterUserForClient = (user: User) => {
   return {
@@ -15,9 +18,6 @@ const filterUserForClient = (user: User) => {
     profilePicture: user.profileImageUrl,
   };
 };
-
-import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
-import { Redis } from "@upstash/redis";
 
 // Create a new ratelimiter, that allows 10 requests per 1 minute
 const ratelimit = new Ratelimit({
