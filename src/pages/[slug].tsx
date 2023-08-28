@@ -1,14 +1,11 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { api } from "~/utils/api";
-import { createServerSideHelpers } from "@trpc/react-query/server";
-import { appRouter } from "~/server/api/root";
-import { prisma } from "~/server/db";
-import { SuperJSON } from "superjson";
 import { PageLayout } from "~/components/layout";
 import Image from "next/image";
 import { LoadingPage } from "~/components/loading";
 import { PostView } from "~/components/postview";
+import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 
 const ProfileFeed = (props: {userId: string}) => {
   const {data, isLoading} =api.posts.getPostsByUserId.useQuery({userId: props.userId})
@@ -17,7 +14,8 @@ const ProfileFeed = (props: {userId: string}) => {
 
   if(!data || data.length === 0) return <div>User has not posted</div>
 
-  return <div className="flex flex-col">
+  //Profile view scroll delete once fixed
+  return <div className="flex flex-col overflow-y-scroll">
     {data.map((fullPost) => (
       <PostView {...fullPost} key={fullPost.post.id} />
     ))}
@@ -57,11 +55,7 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const ssg = createServerSideHelpers({
-    router: appRouter,
-    ctx: { prisma, userId: null },
-    transformer: SuperJSON,
-  });
+  const ssg = generateSSGHelper();
 
   const slug = context.params?.slug;
 
