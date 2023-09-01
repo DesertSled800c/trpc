@@ -36,7 +36,8 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
         <title>{data.username}</title>
       </Head>
       <PageLayout>
-        <div className="relative h-36 bg-slate-600">
+        <div className="relative h-36 bg-gradient-to-r from-zinc-600 to-slate-950">
+          <div className="p-4 text-2xl font-bold">{`@${data.username ?? ""}`}</div>
           <Image
             src={data.profilePicture}
             alt={`${data.username ?? ""}'s profile pic`}
@@ -46,8 +47,7 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
           />
         </div>
         <div className="h-[64px]"></div>
-        <div className="p-4 text-2xl font-bold">{`@${data.username ?? ""}`}</div>
-        <div className="w-full border-b border-slate-400"></div>
+        <div className="w-full border-b border-slate-400 pt-8"></div>
         <ProfileFeed userId={data.id} />
       </PageLayout>
     </>
